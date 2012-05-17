@@ -5,7 +5,7 @@ module TinymceFm
       # scripts = javascript_include_tag('tinymce_fm/application.js') + javascript_include_tag(tinymce_fm_engine.tinymce_combine_js_path(opts))
         # "<script type='text/javascript' src='#{tinymce_fm_engine.tinymce_combine_js_path(opts)}'></script>"
       scripts = [ javascript_include_tag('tinymce_fm/application.js'), 
-                  javascript_include_tag(tinymce_fm_engine.tinymce_combine_js_path(opts)),
+                  javascript_include_tag(tinymce_fm_engine.tinymce_combine_js_path(opts)).sub('.js', ''),
                   stylesheet_link_tag('tinymce_fm/application.css')
                 ].join("\n")
       raw scripts
