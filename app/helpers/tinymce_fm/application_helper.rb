@@ -2,10 +2,10 @@ module TinymceFm
   module ApplicationHelper
     def tinymce_javascript_tag( controller = nil, theme = nil )
       opts = {:manager => "#{controller.to_s if controller.present?}", :theme => theme}
-      # scripts = javascript_include_tag('tinymce_fm/application.js') + javascript_include_tag(tinymce_fm_engine.tinymce_combine_js_path(opts))
-        # "<script type='text/javascript' src='#{tinymce_fm_engine.tinymce_combine_js_path(opts)}'></script>"
+      # As using javascript_include_tag will malform js path
+      tinymce_js = "<script type='text/javascript' src='#{tinymce_fm_engine.tinymce_combine_js_path(opts)}'></script>"
       scripts = [ javascript_include_tag('tinymce_fm/application.js'), 
-                  javascript_include_tag(tinymce_fm_engine.tinymce_combine_js_path(opts)).sub('.js', ''),
+                  tinymce_js,
                   stylesheet_link_tag('tinymce_fm/application.css')
                 ].join("\n")
       raw scripts

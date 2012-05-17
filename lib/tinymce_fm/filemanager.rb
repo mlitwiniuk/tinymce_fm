@@ -4,9 +4,12 @@ module TinymceFm
 
     def self.included(base)
       base.extend ClassMethods
+      base.send :class_attribute, :tinymce_fm_settings
+      base.tinymce_fm_settings = {}
     end
 
     module ClassMethods
+      
 
       def tinymce_filemanager_list_images()
       end
@@ -38,39 +41,39 @@ module TinymceFm
       protected
 
       def thumbs_subdir(*params)
-        write_inheritable_array(:thumbs_subdir, params)
+        self.tinymce_fm_settings[:thumbs_subdir] = params
       end
 
       def thumbs_size(*params)
-        write_inheritable_array(:thumbs_size, params)
+        self.tinymce_fm_settings[:thumbs_size] = params
       end
 
       def image_accept_mime_types(*params)
-        write_inheritable_array(:image_accept_mime_types, *params)
+        self.tinymce_fm_settings[:image_accept_mime_types] = params
       end
 
       def image_save_into_public_subdir(*params)
-        write_inheritable_array(:image_save_into_public_subdir, params)
+        self.tinymce_fm_settings[:image_save_into_public_subdir] = params
       end
 
       def image_file_size_limit(*params)
-        write_inheritable_array(:image_file_size_limit, params)
+        self.tinymce_fm_settings[:image_file_size_limit] = params
       end
 
       def media_accept_mime_types(*params)
-        write_inheritable_array(:media_accept_mime_types, *params)
+        self.tinymce_fm_settings[:media_accept_mime_types] = params
       end
 
       def media_save_into_public_subdir(*params)
-        write_inheritable_array(:media_save_into_public_subdir, params)
+        self.tinymce_fm_settings[:media_save_into_public_subdir] = params
       end
 
       def media_file_size_limit(*params)
-        write_inheritable_array(:media_file_size_limit, params)
+        self.tinymce_fm_settings[:media_file_size_limit] = params
       end
       
       def link_classes_accepted(*params)
-        write_inheritable_array(:link_classes, params)
+        self.tinymce_fm_settings[:link_classes] = params
       end
 
 
@@ -130,35 +133,35 @@ module TinymceFm
     private
 
     def images_folder
-      self.class.read_inheritable_attribute(:image_save_into_public_subdir) || 'images'
+      self.tinymce_fm_settings[:image_save_into_public_subdir] || 'images'
     end
 
     def media_folder
-      self.class.read_inheritable_attribute(:media_save_into_public_subdir) || 'media'
+      self.tinymce_fm_settings[:media_save_into_public_subdir] || 'media'
     end
 
     def thumbs_folder
-      self.class.read_inheritable_attribute(:thumbs_subdir) || 'thumbs'
+      self.tinymce_fm_settings[:thumbs_subdir] || 'thumbs'
     end
 
     def accept_image_mime
-      self.class.read_inheritable_attribute(:image_accept_mime_types) || ['image/jpeg', 'image/gif', 'image/png', 'image/jpg', 'image/bmp']
+      self.tinymce_fm_settings[:image_accept_mime_types] || ['image/jpeg', 'image/gif', 'image/png', 'image/jpg', 'image/bmp']
     end
 
     def accept_media_mime
-      self.class.read_inheritable_attribute(:media_accept_mime_types) ||  ['video/mpeg', 'video/msvideo', 'video/quicktime', 'video/x-flv', 'application/x-shockwave-flash']
+      self.tinymce_fm_settings[:media_accept_mime_types] ||  ['video/mpeg', 'video/msvideo', 'video/quicktime', 'video/x-flv', 'application/x-shockwave-flash']
     end
 
     def image_size_limit
-      (self.class.read_inheritable_attribute(:image_file_size_limit) && self.class.read_inheritable_attribute(:image_file_size_limit)[0]) || 5.megabytes
+      (self.tinymce_fm_settings[:image_file_size_limit] && self.tinymce_fm_settings[:image_file_size_limit][0]) || 5.megabytes
     end
 
     def media_size_limit
-      (self.class.read_inheritable_attribute(:media_file_size_limit) && self.class.read_inheritable_attribute(:media_file_size_limit)[0]) || 30.megabytes
+      (self.tinymce_fm_settings[:media_file_size_limit] && self.tinymce_fm_settings[:media_file_size_limit][0]) || 30.megabytes
     end
     
     def link_classes
-      (self.class.read_inheritable_attribute(:link_classes) || []).flatten
+      (self.tinymce_fm_settings[:link_classes] || []).flatten
     end
 
     @@form_file_upload_form_name = 'upload_form'
@@ -319,7 +322,7 @@ module TinymceFm
               flash[:error] = "Invalid mime type! (#{file.content_type()})"
             end
           else
-            flash[:error] = "File to large! (Limit: #{size_max} file: #{File.size(file)})"
+            flash[:error] = "File to large! (Limit: #{size_max} file: #{File.size(file.tempfile).to_s})"
           end
         else
           flash[:error] = "Field is not a file!"
