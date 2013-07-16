@@ -1,5 +1,5 @@
-<div style="color: green; text-align: center; font-size: 16px;"><%= flash[:notice].untaint %></div>
-<div style="color: red; text-align: center; font-size: 16px;"><%= flash[:error].untaint %></div>
+<div style="color: green; text-align: center; font-size: 16px;"><%= flash[:notice] %></div>
+<div style="color: red; text-align: center; font-size: 16px;"><%= flash[:error]  %></div>
 
 <div class ="tinymce_manager_navi_bar">
   <% @navi_bar.each do |item| %>
@@ -7,14 +7,14 @@
       <% if item != @navi_bar.first %>
         >>
       <% end %>
-      [ <%= link_to item[:name].untaint, "#{@list_action.gsub('tinymce_filemanager/', '')}?navi=#{item[:link].untaint}" %> ]
+      [ <%= link_to item[:name], "#{@list_action.gsub('tinymce_filemanager/', '')}?navi=#{item[:link]}" %> ]
     <% else %>
-      >> <%= item[:name].untaint %>
+      >> <%= item[:name] %>
     <% end %>
   <% end %>
 </div>
 
-<h1><%= t("tinymce_filemanager.folders", :default => 'Folders').untaint %></h1>
+<h1><%= t("tinymce_filemanager.folders", :default => 'Folders') %></h1>
 <table>
   <% @dirs_table.each do |row| %>
     <tr>
@@ -37,7 +37,7 @@
           <%=h column[0..15] %><% if column.length > 15 %>...<% end %>
         </a>
         <br />
-        <a href="<%=h @destroy.gsub('tinymce_filemanager/', '') %>?destroy=<%=h column %>&navi=<%=h @navi %>">[<%= t("tinymce_filemanager.delete", :default => 'Delete').untaint %>]</a>
+        <a href="<%=h @destroy.gsub('tinymce_filemanager/', '') %>?destroy=<%=h column %>&navi=<%=h @navi %>">[<%= t("tinymce_filemanager.delete", :default => 'Delete') %>]</a>
       <% end %>
       </td>
     <% end %>
@@ -45,40 +45,40 @@
   <% end %>
 </table>
 
-<h2><%= t("tinymce_filemanager.create_folder", :default => 'Create folder').untaint %></h2>
+<h2><%= t("tinymce_filemanager.create_folder", :default => 'Create folder') %></h2>
 
 <%= form_for @folder_form_name, :url => "#{@folder_action_name.gsub('tinymce_filemanager/', '')}?navi=#{@navi}" do |f| %>
   <%= f.text_field @folder_field_name %>
-  <%= f.submit t("tinymce_filemanager.create", :default => 'Create').untaint %>
+  <%= f.submit t("tinymce_filemanager.create", :default => 'Create') %>
 <% end %>
 
-<h1><%= t("tinymce_filemanager.items", :default => 'Items').untaint %></h1>
+<h1><%= t("tinymce_filemanager.items", :default => 'Items') %></h1>
 
 <table>
   <% @items_table.each do |row| %>
     <tr>
     <% row.each do |column| %>
       <td style="text-align: center; width: 115px; vertical-align: top;">
-        <a href="#" onclick="tinymceReturnValue('<%= column[:normal].untaint %>', '<%= column[:name].untaint %>')">
+        <a href="#" onclick="tinymceReturnValue('<%= column[:normal] %>', '<%= column[:name] %>')">
           <% if column[:unknown] %>
-          <%= image_tag 'tinymce_fm/media_object.png', :alt => column[:name].untaint, :class => "tinymce_manager_object" %>
+          <%= image_tag 'tinymce_fm/media_object.png', :alt => column[:name], :class => "tinymce_manager_object" %>
           <% else %>
-            <%= image_tag column[:small].untaint, :alt => column[:name].untaint, :class => "tinymce_manager_object" %>
+            <%= image_tag column[:small], :alt => column[:name], :class => "tinymce_manager_object" %>
           <% end %>
           <br />
-          <%= column[:name].gsub(/(.jpeg)$/, "")[0..15].untaint %><% if column[:name].gsub(/(.jpeg)$/, "").length > 15 %>...<% end %>
+          <%= column[:name].gsub(/(.jpeg)$/, "")[0..15] %><% if column[:name].gsub(/(.jpeg)$/, "").length > 15 %>...<% end %>
           </a>
           <br />
-          <a href="<%=h @destroy.gsub('tinymce_filemanager/', '') %>?destroy=<%=h column[:name] %>&navi=<%=h @navi %>">[<%= t("tinymce_filemanager.delete", :default => 'Delete').untaint %>]</a>
+          <a href="<%=h @destroy.gsub('tinymce_filemanager/', '') %>?destroy=<%=h column[:name] %>&navi=<%=h @navi %>">[<%= t("tinymce_filemanager.delete", :default => 'Delete') %>]</a>
       </td>
     <% end %>
     </tr>
   <% end %>
 </table>
 
-<h2><%= t("tinymce_filemanager.upload_file", :default => 'Upload file').untaint %></h2>
+<h2><%= t("tinymce_filemanager.upload_file", :default => 'Upload file') %></h2>
 
 <%= form_for @upload_form_name, :url => "#{@upload_action_name.gsub('tinymce_filemanager/', '')}?navi=#{@navi}", :html => {:multipart => true } do |f| %>
   <%= f.file_field @upload_field_name %>
-  <%= f.submit t("tinymce_filemanager.upload", :default => 'Upload').untaint %>
+  <%= f.submit t("tinymce_filemanager.upload", :default => 'Upload') %>
 <% end %>
