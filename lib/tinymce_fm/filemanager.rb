@@ -9,34 +9,7 @@ module TinymceFm
     end
 
     module ClassMethods
-      
 
-      def tinymce_filemanager_list_images()
-      end
-
-      def tinymce_filemanager_upload_image()
-      end
-
-      def tinymce_filemanager_destroy_image()
-      end
-
-      def tinymce_filemanager_create_images_folder()
-      end
-
-      def tinymce_filemanager_list_media()
-      end
-
-      def tinymce_filemanager_upload_media()
-      end
-
-      def tinymce_filemanager_destroy_media()
-      end
-
-      def tinymce_filemanager_create_media_folder()
-      end
-      
-      def tinymce_filemanager_list_links()
-      end
 
       protected
 
@@ -71,7 +44,7 @@ module TinymceFm
       def media_file_size_limit(*params)
         self.tinymce_fm_settings[:media_file_size_limit] = params
       end
-      
+
       def link_classes_accepted(*params)
         self.tinymce_fm_settings[:link_classes] = params
       end
@@ -114,7 +87,7 @@ module TinymceFm
     def tinymce_filemanager_create_media_folder()
       create_folder_base(media_folder ,"tinymce_filemanager/list_media")
     end
-    
+
     def tinymce_filemanager_list_links
       params[:search_form] ||= {}
       @available_classes = link_classes
@@ -128,40 +101,40 @@ module TinymceFm
     def accept_images_mime_types(params)
       self.accept_image_mime = params
     end
-    
+
 
     private
 
     def images_folder
-      self.tinymce_fm_settings[:image_save_into_public_subdir] || 'images'
+      self.class.tinymce_fm_settings[:image_save_into_public_subdir] || 'images'
     end
 
     def media_folder
-      self.tinymce_fm_settings[:media_save_into_public_subdir] || 'media'
+      self.class.tinymce_fm_settings[:media_save_into_public_subdir] || 'media'
     end
 
     def thumbs_folder
-      self.tinymce_fm_settings[:thumbs_subdir] || 'thumbs'
+      self.class.tinymce_fm_settings[:thumbs_subdir] || 'thumbs'
     end
 
     def accept_image_mime
-      self.tinymce_fm_settings[:image_accept_mime_types] || ['image/jpeg', 'image/gif', 'image/png', 'image/jpg', 'image/bmp']
+      (self.class.tinymce_fm_settings[:image_accept_mime_types] || ['image/jpeg', 'image/gif', 'image/png', 'image/jpg', 'image/bmp']).flatten
     end
 
     def accept_media_mime
-      self.tinymce_fm_settings[:media_accept_mime_types] ||  ['video/mpeg', 'video/msvideo', 'video/quicktime', 'video/x-flv', 'application/x-shockwave-flash']
+      (self.class.tinymce_fm_settings[:media_accept_mime_types] ||  ['video/mpeg', 'video/msvideo', 'video/quicktime', 'video/x-flv', 'application/x-shockwave-flash']).flatten
     end
 
     def image_size_limit
-      (self.tinymce_fm_settings[:image_file_size_limit] && self.tinymce_fm_settings[:image_file_size_limit][0]) || 5.megabytes
+      (self.class.tinymce_fm_settings[:image_file_size_limit] && self.class.tinymce_fm_settings[:image_file_size_limit][0]) || 5.megabytes
     end
 
     def media_size_limit
-      (self.tinymce_fm_settings[:media_file_size_limit] && self.tinymce_fm_settings[:media_file_size_limit][0]) || 30.megabytes
+      (self.class.tinymce_fm_settings[:media_file_size_limit] && self.class.tinymce_fm_settings[:media_file_size_limit][0]) || 30.megabytes
     end
-    
+
     def link_classes
-      (self.tinymce_fm_settings[:link_classes] || []).flatten
+      (self.class.tinymce_fm_settings[:link_classes] || []).flatten
     end
 
     @@form_file_upload_form_name = 'upload_form'
@@ -233,11 +206,11 @@ module TinymceFm
 
       @thumbs_width = @@thumbs_width
       @thumbs_height = @@thumbs_height
-      
+
       if !navi_list.empty?
         @dirs = ['..']
       end
-      
+
       Dir.entries(thumb_save_directory(base_folder, "", navi_list)).each do |i|
         if i!='.' && i!='..'
           if File.directory?(thumb_save_directory(base_folder, i, navi_list))
@@ -251,7 +224,7 @@ module TinymceFm
           end
         end
       end
-      
+
       #Bonias: moze tak:
       #@dirs_table = @dirs.sort.in_groups_of(6, false) ?
       @dirs_table = build_table(@dirs.sort, 6)
@@ -425,7 +398,7 @@ module TinymceFm
       end
       table << row
     end
-    
+
     def make_image_thumb(base_folder, file, navi_list)
       image = ::MiniMagick::Image.open(save_directory(base_folder, validate_name(file.original_filename), navi_list))
       image.resize "#{@@thumbs_width}x#{@@thumbs_height}"
